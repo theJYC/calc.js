@@ -3,7 +3,7 @@ button {
     border: .002rem solid black;
     border-radius: .25rem;
     width: 60px;
-    height: 50px;
+    height: 61px;
 }
 /*#calculator {
     display: grid;
@@ -18,10 +18,19 @@ button {
     height: 70px;
 }
 
+#screen-number {
+    padding: 20px;
+    margin: -10px;
+    font-size: 60px;
+    font-family: Arial;
+
+}
+
 #keys {
     display: grid;
     grid-template-columns: 60px 60px 60px 60px;
     grid-template-rows: 60px 60px 60px 60px 60px;
+    grid-row-gap: 0px;
 
 }
 
@@ -31,6 +40,12 @@ button {
 
 #number {
     background-color: #A8A8A8;
+}
+
+.zero {
+    grid-column: 2/4;
+    grid-row: 5/5;
+    width: 120px;
 }
 
 .misc {
