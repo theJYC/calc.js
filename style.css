@@ -4,10 +4,16 @@ button {
     border-radius: .25rem;
     width: 60px;
     height: 61px;
+    cursor: pointer;
 }
 
-#calculator {
-    color: white;
+#calculator { /* centering the calc */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 70vh;
 }
 /*#calculator {
     display: grid;
@@ -21,6 +27,7 @@ button {
     width: 238px;
     height: 70px;
     background-color: #606060;
+
 }
 
 #screen-number {
