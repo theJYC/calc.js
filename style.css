@@ -1,3 +1,6 @@
+body {
+
+}
 
 button {
     border: .002rem solid black;
@@ -14,13 +17,9 @@ button {
   align-items: center;
   text-align: center;
   min-height: 70vh;
+  font-family: 'Inconsolata', monospace;
 }
-/*#calculator {
-    display: grid;
-    grid-template-columns: 60px 60px 60px 60px;
-    grid-template-rows: 60px 60px 60px 60px 60px;
-}
-*/
+
 #screen {
     border: .002rem solid black;
     border-radius: .25rem;
