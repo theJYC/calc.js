@@ -40,19 +40,22 @@ const operate = (x,y,z) => {
     }
 }
 
-//you want to select all the buttons that are to be manipulated by JS:
+//select all the buttons that are to be manipulated by JS:
 
 const numberKeys = document.querySelectorAll("#number"); //number buttons
 const operatorKeys = document.querySelectorAll("#operator"); //operator button
 const resetKey = document.querySelector("#reset"); //reset button
 const inverseKey = document.querySelector("#inverse"); //inverse button
 const percentKey = document.querySelector("#percent"); //percent button
-const screen = document.querySelector("#screenumber"); // screen value
+const screen = document.querySelector("#screen-number"); // screen value
 
-//functions that populates the display when number button is clicked
+//functions that populate the display when number button is clicked
 
-const numberClicked = numberKeys.addEventListener("click", addToDisplay);
 
-const addToDisplay = (numberKeys) => {
-    return screen.innerText + numberKeys;
+const addToDisplay = () => {
+    return screen.innerText += numberKeys.innerHTML;
+}
+
+for (number of numberKeys) {
+    number.addEventListener("click", addToDisplay)
 }
