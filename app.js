@@ -53,23 +53,27 @@ const screen = document.querySelector("#screen-number"); // screen value
 
 
 const addToDisplay = (value) => {
-    return screen.innerText += value;
+    return screen.innerText += value; //to stage the key input onto the screen as a string
 }
 
 const clearDisplay = () => {
-    return screen.innerText = "";
+    return screen.innerText = ""; //to render the staged string into blank; a.k.a. clear screen
 }
-// add one event listener to the entire buttons
+
+//these are indicators for the logic (not the display) of the calculator.
+//p.s. important to separate out the logic and the display!
 let numberOnScreen = false;
 let operatorOnScreen = false;
-let firstNumber; //first number, up until the operator is pressed
+let firstNumber; //made these into variables, which will all be undefined to begin with;
 let operator;
 let secondNumber;
 
+// add one event listener to the entire buttons
 const allButtons = document.getElementById("keys");
 
 allButtons.addEventListener("click", (e) => {
-    const target = e.target; //specific button that is clicked
+    const target = e.target; // target attribute will return the specific button that is clicked
+
     if (target.classList.contains("number") && !operator) {
         addToDisplay(target.innerHTML);
         numberOnScreen = true;
@@ -101,5 +105,26 @@ allButtons.addEventListener("click", (e) => {
         secondNumber = undefined;
         operator = undefined;
     }
- //nextsteps: allclear (AC) button; float toFixed(); big numbers (to sig figs); negative numbers;
+    if (target.classList.contains("allclear")) {
+        clearDisplay();
+        firstNumber = undefined;
+        secondNumber = undefined;
+        operator = undefined;
+    }
+    if (target.classList.contains("inverse") && numberOnScreen)  {
+        inversed = screen.innerText * -1;
+        clearDisplay();
+        addToDisplay(inversed);
+        if (firstNumber < 0 && secondNumber > 0) {
+            addToDisplay(inversed)
+        }
+    }
 });
+
+//nextsteps:
+// allclear (AC) button; (done)
+ // float toFixed();
+ // big numbers (to sig figs);
+ // negative numbers;
+ // automatic next calculation
+
