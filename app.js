@@ -41,17 +41,10 @@ const operate = (x,y,z) => {
 }
 
 //select all the buttons that are to be manipulated by JS:
-
-const numberKeys = document.querySelectorAll(".number"); //number buttons
-const operatorKeys = document.querySelectorAll(".operator"); //operator button
-const resetKey = document.querySelector("#reset"); //reset button
-const inverseKey = document.querySelector("#inverse"); //inverse button
-const percentKey = document.querySelector("#percent"); //percent button
 const screen = document.querySelector("#screen-number"); // screen value
 
+
 //functions that populate the display when number button is clicked
-
-
 const addToDisplay = (value) => {
     return screen.innerText += value; //to stage the key input onto the screen as a string
 }
@@ -59,6 +52,24 @@ const addToDisplay = (value) => {
 const clearDisplay = () => {
     return screen.innerText = ""; //to render the staged string into blank; a.k.a. clear screen
 }
+
+//edge cases
+
+const refineNumber = (num) => { //e.g. starting with output 500000
+    sciNotation = num.toExponential(2); //to yield 5.00e+5
+    coefAndExp = sciNotation.split("e"); //to yield ["5.00", "+5"]
+    coefficient = coefAndExp[0]; //to yield "5.00" i.e. the coefficient
+    console.log(coefficient)
+    exponent = coefAndExp[1]; //to yield "+5" i.e. the exponent
+    console.log(exponent);
+    return parseInt(`${coefficient} x10^${exponent}`); // to yield 5.00 x10^+5
+}
+
+//this^ currently does not work so will get back to it.
+//right now the output, when integrated onto calculator,
+// is displaying coeff and exp but on a new line.
+
+
 
 //these are indicators for the logic (not the display) of the calculator.
 //p.s. important to separate out the logic and the display!
@@ -74,12 +85,12 @@ const allButtons = document.getElementById("keys");
 allButtons.addEventListener("click", (e) => {
     const target = e.target; // target attribute will return the specific button that is clicked
 
-    if (target.classList.contains("number") && !operator) {
+    if (target.classList.contains("number") && !operator) { //when a number key is pressed (before an operator key is pressed)
         addToDisplay(target.innerHTML);
         numberOnScreen = true;
         firstNumber = screen.innerHTML;
     }
-    if (target.classList.contains("operator")) {
+    if (target.classList.contains("operator")) { //whenever an operator key is clicked
         firstNumber = screen.innerText;
         operator = target.innerHTML;
         clearDisplay();
@@ -87,20 +98,24 @@ allButtons.addEventListener("click", (e) => {
         numberOnScreen = false;
         operatorOnScreen = true;
     }
-    if (target.classList.contains("number") && operator) {
-        if (operatorOnScreen) {
-            clearDisplay();
-        }
+    if (target.classList.contains("number") && operator) { //when number key is clicked, after an operator key has been clicked
+        clearDisplay();
         addToDisplay(target.innerHTML);
-        numberOnScreen = true;
-        secondNumber = screen.innerHTML;
+        numberOnScreen = false;
+        if (target.classList.contains("number") && operator && !numberOnScreen) {
+            secondNumber = screen.innerHTML;
+            numberOnScreen = true;
+        }
     }
-    if (target.classList.contains("equals") && firstNumber && operator && secondNumber) {
+
+    if (target.classList.contains("equals") && firstNumber && operator && secondNumber) { //when equals key is pressed
         clearDisplay();
         firstNumber = parseInt(firstNumber);
         secondNumber = parseInt(secondNumber);
         result = operate(firstNumber, secondNumber, operator);
-        addToDisplay(result);
+        console.log(result);
+        resultRefined = refineNumber(result); //refineNumber to condense output and make more manageable
+        addToDisplay(resultRefined);
         firstNumber = result;
         secondNumber = undefined;
         operator = undefined;
@@ -114,11 +129,10 @@ allButtons.addEventListener("click", (e) => {
     if (target.classList.contains("inverse") && numberOnScreen)  {
         inversed = screen.innerText * -1;
         clearDisplay();
-        addToDisplay(inversed);
-        if (firstNumber < 0 && secondNumber > 0) {
-            addToDisplay(inversed)
-        }
+        addToDisplay(inversed); //bug [1]
     }
+
+
 });
 
 //nextsteps:
@@ -128,3 +142,9 @@ allButtons.addEventListener("click", (e) => {
  // negative numbers;
  // automatic next calculation
 
+/* bugs
+
+[1]: the inverse sign applies well with the firstNumber,
+but not with the secondNumber
+
+*/

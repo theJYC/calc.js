@@ -3,10 +3,10 @@ body {
 }
 
 button {
-    border: .002rem solid black;
-    border-radius: .25rem;
+    border: 2.75px solid #4f4f4f;
+    border-radius: 10px;
     width: 60px;
-    height: 61px;
+    height: 57.5px;
     cursor: pointer;
 }
 
@@ -16,42 +16,54 @@ button {
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 70vh;
+  width: 317px;
+  height: 465px;
   font-family: 'Inconsolata', monospace;
+  background-color: #999999;
+  border-radius: 4%;
 }
 
 #screen {
-    border: .002rem solid black;
-    border-radius: .25rem;
-    width: 238px;
+    border: 2.75px solid #4f4f4f;
+    margin-bottom: 7px;
+    border-radius: 0.75rem;
+    width: 243px;
     height: 70px;
-    background-color: #606060;
-
+    background-color: #FAF7EF /* commented grey 606060*/
+/*  word-wrap: break-word;
+    word-break: break-all;  apparently these are for the number to wrap around when they get too big. not working as of current though*/
 }
 
 #screen-number {
-    padding: 1px;
+    padding: 3px;
     margin: 0px;
-    font-size: 60px;
+    font-size: 52.5px;
     font-family: Arial;
-
+    text-align: end;
+    color: #575555;
 }
 
 #keys {
     display: grid;
     grid-template-columns: 60px 60px 60px 60px;
     grid-template-rows: 60px 60px 60px 60px 60px;
-    grid-row-gap: 0px;
+    grid-column-gap: 2.5px;
+    grid-row-gap: 2px;
 
 }
 
-.operator {
-    background-color: orange;
+.operator, .equals {
+    background-color: #FAF7EF;
+    font-weight:bold;
+    color: #AF5E59;
+    font-size: 17.5px;
 }
 
 .number {
-    background-color: #A8A8A8;
+    background-color: #FAF7EF;
     font-size: 17.5px;
+    color: #575555;
+    font-weight: bold;
 }
 
 #zero {
@@ -61,5 +73,8 @@ button {
 }
 
 .misc {
-    background-color: #828282
+    background-color: #FAF7EF;
+    color: #4E6E4E;
+    font-weight: bold;
+    font-size: 17.5px;
 }
