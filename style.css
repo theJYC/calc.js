@@ -1,16 +1,13 @@
-body {
-
-}
-
 button {
     border: 2.75px solid #4f4f4f;
     border-radius: 10px;
     width: 60px;
     height: 57.5px;
     cursor: pointer;
+    outline: none;
 }
 
-#calculator { /* centering the calc */
+#calculator { /* shaping the calc (grey area) */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -35,9 +32,12 @@ button {
 }
 
 #screen-number {
-    padding: 3px;
+    padding-top: 12px;
+    padding-bottom: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
     margin: 0px;
-    font-size: 52.5px;
+    font-size: 42.5px;
     font-family: Arial;
     text-align: end;
     color: #575555;
@@ -59,11 +59,29 @@ button {
     font-size: 17.5px;
 }
 
+.operator:hover, .equals:hover {
+    background-color: #c26965;
+    color: #FAF7EF;
+}
+
+.operator:active, .equals:active {
+    background-color: #AF5E59;
+    color: #FAF7EF;
+}
+
 .number {
     background-color: #FAF7EF;
     font-size: 17.5px;
     color: #575555;
     font-weight: bold;
+}
+
+.number:hover {
+    background-color: #e3e1da;
+}
+
+.number:active {
+    background-color: #d4d2cb;
 }
 
 #zero {
@@ -77,4 +95,14 @@ button {
     color: #4E6E4E;
     font-weight: bold;
     font-size: 17.5px;
+}
+
+.misc:hover {
+    background-color: #6e9c6e;
+    color: #FAF7EF;
+}
+
+.misc:active {
+    background-color: #5c805c;
+    color: #FAF7EF;
 }

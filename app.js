@@ -27,12 +27,13 @@ const operate = (x,y,z) => {
         case "-":
             return subtract(x,y);
             break;
-        case "*":
+        case "x":
             return multiply(x,y);
             break;
-        case "/":
-            if (y === 0) {
-                return 'nah';
+        case "÷":
+            if (y === 0) { // EDGE CASE 1: DIVIDE BY ZERO
+                alert("Cannot divide by zero.");
+                return clearDisplay();
             } else {
                 return divide(x,y);
             }
@@ -43,8 +44,7 @@ const operate = (x,y,z) => {
 //select all the buttons that are to be manipulated by JS:
 const screen = document.querySelector("#screen-number"); // screen value
 
-
-//functions that populate the display when number button is clicked
+//functions that interacts with the display when number button is clicked
 const addToDisplay = (value) => {
     return screen.innerText += value; //to stage the key input onto the screen as a string
 }
@@ -53,23 +53,18 @@ const clearDisplay = () => {
     return screen.innerText = ""; //to render the staged string into blank; a.k.a. clear screen
 }
 
-//edge cases
+//EDGE CASE 2: LARGE NUMBER OUTPUTS
 
-const refineNumber = (num) => { //e.g. starting with output 500000
-    sciNotation = num.toExponential(2); //to yield 5.00e+5
-    coefAndExp = sciNotation.split("e"); //to yield ["5.00", "+5"]
-    coefficient = coefAndExp[0]; //to yield "5.00" i.e. the coefficient
-    console.log(coefficient)
-    exponent = coefAndExp[1]; //to yield "+5" i.e. the exponent
-    console.log(exponent);
-    return parseInt(`${coefficient} x10^${exponent}`); // to yield 5.00 x10^+5
+const refineNumber = (num) => {
+    if (num.toString().length > 10) { //e.g. if result is over 7 sig figs (fills up screen)
+        sciNotation = parseInt(num).toExponential(2); //to yield e.g. 5.00e+5
+        numToDisplay = sciNotation;
+    }
+    else {
+        numToDisplay = num; // don't do any exponential monkey business given the expl. below
+    }
+    return numToDisplay;
 }
-
-//this^ currently does not work so will get back to it.
-//right now the output, when integrated onto calculator,
-// is displaying coeff and exp but on a new line.
-
-
 
 //these are indicators for the logic (not the display) of the calculator.
 //p.s. important to separate out the logic and the display!
@@ -78,6 +73,7 @@ let operatorOnScreen = false;
 let firstNumber; //made these into variables, which will all be undefined to begin with;
 let operator;
 let secondNumber;
+let thirdNumber;
 
 // add one event listener to the entire buttons
 const allButtons = document.getElementById("keys");
@@ -86,9 +82,18 @@ allButtons.addEventListener("click", (e) => {
     const target = e.target; // target attribute will return the specific button that is clicked
 
     if (target.classList.contains("number") && !operator) { //when a number key is pressed (before an operator key is pressed)
-        addToDisplay(target.innerHTML);
+        input = addToDisplay(target.innerHTML);
+        if (input.length >= 10) {
+            clearDisplay();
+            addToDisplay(refineNumber(input)); //pls fix!
+        }
+        else {
+        //     alert("Input allowed up to 10 significant figures")
+        //     input.pop();
+        // }
         numberOnScreen = true;
-        firstNumber = screen.innerHTML;
+        firstNumber = parseInt(screen.innerHTML);
+        }
     }
     if (target.classList.contains("operator")) { //whenever an operator key is clicked
         firstNumber = screen.innerText;
@@ -107,18 +112,34 @@ allButtons.addEventListener("click", (e) => {
             numberOnScreen = true;
         }
     }
-
     if (target.classList.contains("equals") && firstNumber && operator && secondNumber) { //when equals key is pressed
         clearDisplay();
         firstNumber = parseInt(firstNumber);
         secondNumber = parseInt(secondNumber);
         result = operate(firstNumber, secondNumber, operator);
         console.log(result);
-        resultRefined = refineNumber(result); //refineNumber to condense output and make more manageable
-        addToDisplay(resultRefined);
+        if (result[0] === 0) { // if result is a decimal that starts with 0 (e.g. 0.54)
+            result = parseInt(result.toFixed(3))
+        }
+        else { // result does not start with a 0; i.e. not a decimal
+            result = refineNumber(result); //refineNumber to condense output and make more manageable
+        }
+        addToDisplay(result);
         firstNumber = result;
         secondNumber = undefined;
         operator = undefined;
+        thirdNumber = true;
+    }
+    if (target.classList.contains("percent")) {
+        percent = screen.innerText / 100;
+        clearDisplay();
+        addToDisplay(percent);
+    }
+
+    if (target.classList.contains("number") && thirdNumber) {
+        clearDisplay();
+        thirdNumber = false;
+        addToDisplay(target.innerHTML);
     }
     if (target.classList.contains("allclear")) {
         clearDisplay();
@@ -133,6 +154,14 @@ allButtons.addEventListener("click", (e) => {
     }
 
 
+});
+
+allButtons.addEventListener("mouseenter", (e) => {
+    const target = e.target;
+
+    if (target.classList.contains("number")) {
+        target.style.backgroundColor = blue;
+    }
 });
 
 //nextsteps:
