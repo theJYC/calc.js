@@ -156,14 +156,6 @@ allButtons.addEventListener("click", (e) => {
 
 });
 
-allButtons.addEventListener("mouseenter", (e) => {
-    const target = e.target;
-
-    if (target.classList.contains("number")) {
-        target.style.backgroundColor = blue;
-    }
-});
-
 //nextsteps:
 // allclear (AC) button; (done)
  // float toFixed();
