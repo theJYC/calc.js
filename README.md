@@ -1,5 +1,5 @@
 
-<img src="{{site.base_url }}/dev/assets/images/calc" alt='calculator static demo' width="345">
+<img src="calc.png" alt='calculator static demo' width="345">
 
 After picking up JavaScript a few months ago, this is my first standalone project that has been testing out the limits to my vanilla JS knowledge. [Link to source](https://github.com/jinyoungch0i/Calculator){:target="_blank"}
 
