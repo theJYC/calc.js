@@ -81,11 +81,14 @@ const allButtons = document.getElementById("keys");
 allButtons.addEventListener("click", (e) => {
     const target = e.target; // target attribute will return the specific button that is clicked
 
-    if (target.classList.contains("number") && !operator) { //when a number key is pressed (before an operator key is pressed)
+    //when a number key is pressed (before an operator key is pressed)
+    if (target.classList.contains("number") && !operator) {
         input = addToDisplay(target.innerHTML);
         if (input.length >= 10) {
             clearDisplay();
-            addToDisplay(refineNumber(input)); //pls fix!
+            refinedInput = refineNumber(input);
+            addToDisplay(refinedInput); //pls fix!
+            parseInt(refinedInput)
         }
         else {
         //     alert("Input allowed up to 10 significant figures")
@@ -95,7 +98,8 @@ allButtons.addEventListener("click", (e) => {
         firstNumber = parseInt(screen.innerHTML);
         }
     }
-    if (target.classList.contains("operator")) { //whenever an operator key is clicked
+    //whenever an operator key is clicked
+    if (target.classList.contains("operator")) {
         firstNumber = screen.innerText;
         operator = target.innerHTML;
         clearDisplay();
@@ -103,7 +107,12 @@ allButtons.addEventListener("click", (e) => {
         numberOnScreen = false;
         operatorOnScreen = true;
     }
-    if (target.classList.contains("number") && operator) { //when number key is clicked, after an operator key has been clicked
+    //if an operator button is clicked twice
+    if (target.classList.contains("operator") && operatorOnScreen) {
+        operator = target.innerHTML; //throwing an error
+    }
+    //when number key is clicked, after an operator key has been clicked
+    if (target.classList.contains("number") && operator) {
         clearDisplay();
         addToDisplay(target.innerHTML);
         numberOnScreen = false;
@@ -112,17 +121,21 @@ allButtons.addEventListener("click", (e) => {
             numberOnScreen = true;
         }
     }
-    if (target.classList.contains("equals") && firstNumber && operator && secondNumber) { //when equals key is pressed
+    //when equals key is pressed, having logged firstNumber, operator, secondNumber
+    if (target.classList.contains("equals") && firstNumber && operator && secondNumber) {
         clearDisplay();
         firstNumber = parseInt(firstNumber);
         secondNumber = parseInt(secondNumber);
         result = operate(firstNumber, secondNumber, operator);
         console.log(result);
-        if (result[0] === 0) { // if result is a decimal that starts with 0 (e.g. 0.54)
+        // if result is a decimal that starts with 0 (e.g. 0.54)
+        if (result[0] === 0) {
             result = parseInt(result.toFixed(3))
         }
-        else { // result does not start with a 0; i.e. not a decimal
-            result = refineNumber(result); //refineNumber to condense output and make more manageable
+        // result does not start with a 0; i.e. not a decimal
+        else {
+            //refineNumber to condense output and make more manageable
+            result = refineNumber(result);
         }
         addToDisplay(result);
         firstNumber = result;

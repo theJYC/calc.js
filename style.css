@@ -63,19 +63,32 @@ button {
 
 }
 
-.operator, .equals {
+.operator {
     background-color: #FAF7EF;
     font-weight:bold;
     color: #AF5E59;
     font-size: 17.5px;
 }
 
-.operator:hover, .equals:hover {
+.equals {
     background-color: #c26965;
     color: #FAF7EF;
 }
 
-.operator:active, .equals:active {
+.equals:hover {
+    background-color: #AF5E59;
+}
+
+.equals:active {
+    background-color: #9c5854;
+}
+
+.operator:hover {
+    background-color: #c26965;
+    color: #FAF7EF;
+}
+
+.operator:active {
     background-color: #AF5E59;
     color: #FAF7EF;
 }
@@ -109,11 +122,26 @@ button {
 }
 
 .misc:hover {
-    background-color: #6e9c6e;
+    background-color: #5c805c;
     color: #FAF7EF;
 }
 
 .misc:active {
+    background-color: #547354;
+    color: #FAF7EF;
+}
+
+.allclear {
     background-color: #5c805c;
+    color: #FAF7EF;
+}
+
+.allclear:hover {
+    background-color: #547354;
+    color: #FAF7EF;
+}
+
+.allclear:active {
+    background-color: #496349;
     color: #FAF7EF;
 }
