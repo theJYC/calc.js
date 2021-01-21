@@ -1,6 +1,6 @@
 
 <a href="https://jinyoungch0i.github.io/Calculator/">
-    <img src="calc.png" alt='calculator static demo' height="250">
+    <img src="calc.png" alt='calculator static demo' height="300">
 </a>
 
 After picking up JavaScript a few months ago, this is my first standalone project that has been testing out the limits to my vanilla JS knowledge.
