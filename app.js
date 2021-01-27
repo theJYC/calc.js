@@ -51,7 +51,7 @@ const clearDisplay = () => {
 //EDGE CASE 2: LARGE NUMBER OUTPUTS
 
 const refine = (num) => {
-    if (num.toString().length >= 10) { //e.g. if result is over 7 sig figs (fills up screen)
+    if (num.toString().length >= 10) { //e.g. if result is over 10 sig figs (fills up screen)
         sciNotation = parseInt(num).toExponential(2); //to yield e.g. 5.00e+5
         numToDisplay = sciNotation;
     }
@@ -151,7 +151,7 @@ allButtons.addEventListener("click", (e) => {
         console.log(`output is ${result}`);
         console.log(typeof result);
 
-        if (result.toString().length >= 10) { //if output is a decimal, no need to refine but
+        if (result.toString().length >= 10) { //if output is a decimal, no need to refine but make sure displayed number is readable
             result = refine(result);
         }
 
@@ -190,24 +190,36 @@ allButtons.addEventListener("click", (e) => {
     if (target.classList.contains("inverse") && numberOnScreen)  {
         inversed = screen.innerText * -1;
         clearDisplay();
-        addToDisplay(inversed); //bug [1]
+        addToDisplay(inversed);
     }
 
 
 });
 
- /* edge cases fixed:
+ /*
+ edge cases still to be fixed (in order of priority):
 
- allclear (AC) button; (done)
- parsing floats;
- big numbers (to sig figs);
- negative numbers (for both first and second operands);
- automatic next calculation
+ 1a) 0.33333223455433 input converts to 0.00e+0
+ -when there are long lines of outputs (between 0 and 1), find a different way to display the output.
+ -ideally the output should be in a readable format for small numbers (decimals).
+ -0.00e+0 vs. 0.3333322 (a more readable output rounded up, to sum 10 char's in length to fit screen)
+
+ 1b) % (percent) function outputing without refine() taking place
+ -this must be to do with .toExponent() not being entirely compatible for small numbers in JS.
+ -this must also be tied to edge case 1) above.
+
+ 2) 0.33333223455433 input (after being converted to 0.00e+0) plus operator and operand will output 0.
+ -evidently this bug has to do with
+
+ 3) when multiple operators are pressed
+ -stage the last pressed operator, and ignore the previous ones.
+ -maybe add a visual function to indicate the operator 'in action'.
 
 
-/* bugs
+n.b. these edge cases were not fixed at the time this script was written
+given that they are centered around doing a deeper dive into JS's unique way of handling numbers.
 
-[1]: the inverse sign applies well with the firstNumber,
-but not with the secondNumber
+since the priority was to deploy a functional web application with command of DOM and WebAPI concepts,
+i will be putting a pause on developing this calculator since the learning priority was achieved :)
 
 */

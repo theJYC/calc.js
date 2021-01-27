@@ -30,6 +30,7 @@ button {
   font-family: 'Inconsolata', monospace;
   background-color: #999999;
   border-radius: 4%;
+  border: 2.75px solid #4f4f4f;
 }
 
 #screen {
@@ -149,4 +150,15 @@ button {
 
 #sourcecode {
     font-family: Arial;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.sourcetext {
+    color: #4f4f4f;
+    font-weight: bold;
+
+    text-decoration: none;
 }
