@@ -55,8 +55,8 @@ const clearDisplay = () => {
 
 //EDGE CASE 2: LARGE NUMBER OUTPUTS
 
-const refineNumber = (num) => {
-    if (num.toString().length > 10) { //e.g. if result is over 7 sig figs (fills up screen)
+const refine = (num) => {
+    if (num.toString().length >= 10) { //e.g. if result is over 7 sig figs (fills up screen)
         sciNotation = parseInt(num).toExponential(2); //to yield e.g. 5.00e+5
         numToDisplay = sciNotation;
     }
@@ -75,54 +75,81 @@ let operator;
 let secondNumber;
 let thirdNumber;
 
+
 // add one event listener to the entire buttons
 const allButtons = document.getElementById("keys");
 
 allButtons.addEventListener("click", (e) => {
     const target = e.target; // target attribute will return the specific button that is clicked
 
+    const input = target.innerHTML;
+    const screenNumber = screen.innerHTML;
+
     //when a number key is pressed (before an operator key is pressed)
     if (target.classList.contains("number") && !operator) {
-        input = addToDisplay(target.innerHTML);
-        if (input.length >= 10) {
+
+        if (screenNumber.length >= 10) {
             clearDisplay();
-            refinedInput = refineNumber(input);
-            addToDisplay(refinedInput); //pls fix!
-            parseInt(refinedInput)
+            bigNumber = screenNumber + input;
+            refinedInput = refine(bigNumber);
+            addToDisplay(refinedInput);
+            numberOnScreen = true;
         }
+
+        else if (screenNumber.includes("e")) { //i.e. if the input is a large num that has been refine'ed
+            clearDisplay();
+            bigNumber += input; // this ensures the addition of more sig figs as input gets larger
+            addToDisplay(refine(bigNumber));
+            numberOnScreen = true;
+        }
+
         else {
-        //     alert("Input allowed up to 10 significant figures")
-        //     input.pop();
-        // }
+        addToDisplay(input);
         numberOnScreen = true;
-        firstNumber = parseInt(screen.innerHTML);
         }
     }
+
     //whenever an operator key is clicked
     if (target.classList.contains("operator")) {
         firstNumber = screen.innerText;
         operator = target.innerHTML;
         clearDisplay();
-        addToDisplay(operator);
+        // target.style.backgroundColor = "red";
         numberOnScreen = false;
-        operatorOnScreen = true;
+        operatorStaged = true;
     }
-    //if an operator button is clicked twice
-    if (target.classList.contains("operator") && operatorOnScreen) {
-        operator = target.innerHTML; //throwing an error
-    }
+
+    //EDGECASE TO BE ADDED: if OPERATOR BUTTON is clicked TWICE
+    // PLACEHOLDER!
+    //
+
     //when number key is clicked, after an operator key has been clicked
     if (target.classList.contains("number") && operator) {
-        clearDisplay();
-        addToDisplay(target.innerHTML);
-        numberOnScreen = false;
-        if (target.classList.contains("number") && operator && !numberOnScreen) {
-            secondNumber = screen.innerHTML;
+
+        if (screenNumber.length >= 10) {
+            clearDisplay();
+            bigNumber = screenNumber + input;
+            refinedInput = refine(bigNumber);
+            addToDisplay(refinedInput);
             numberOnScreen = true;
+        }
+
+        else if (screenNumber.includes("e")) { //i.e. if the input is a large num that has been refine'ed
+            clearDisplay();
+            bigNumber += input; // this ensures the addition of more sig figs as input gets larger
+            addToDisplay(refine(bigNumber));
+            numberOnScreen = true;
+        }
+
+        else {
+
+        addToDisplay(input);
+        numberOnScreen = true;
         }
     }
     //when equals key is pressed, having logged firstNumber, operator, secondNumber
-    if (target.classList.contains("equals") && firstNumber && operator && secondNumber) {
+    if (target.classList.contains("equals") && firstNumber && operator) {
+        secondNumber = screen.innerText;
         clearDisplay();
         firstNumber = parseInt(firstNumber);
         secondNumber = parseInt(secondNumber);
@@ -134,8 +161,8 @@ allButtons.addEventListener("click", (e) => {
         }
         // result does not start with a 0; i.e. not a decimal
         else {
-            //refineNumber to condense output and make more manageable
-            result = refineNumber(result);
+            //refine to condense output and make more manageable
+            result = refine(result);
         }
         addToDisplay(result);
         firstNumber = result;
@@ -145,8 +172,14 @@ allButtons.addEventListener("click", (e) => {
     }
     if (target.classList.contains("percent")) {
         percent = screen.innerText / 100;
-        clearDisplay();
-        addToDisplay(percent);
+        if (percent.length >= 10) {
+            clearDisplay();
+            addToDisplay(refine(percent));
+        }
+        else {
+            clearDisplay();
+            addToDisplay(percent);
+        }
     }
 
     if (target.classList.contains("number") && thirdNumber) {
