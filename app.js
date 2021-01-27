@@ -116,7 +116,6 @@ allButtons.addEventListener("click", (e) => {
         clearDisplay();
         // target.style.backgroundColor = "red";
         numberOnScreen = false;
-        operatorStaged = true;
     }
 
     //EDGECASE TO BE ADDED: if OPERATOR BUTTON is clicked TWICE
@@ -142,7 +141,6 @@ allButtons.addEventListener("click", (e) => {
         }
 
         else {
-
         addToDisplay(input);
         numberOnScreen = true;
         }
@@ -151,21 +149,34 @@ allButtons.addEventListener("click", (e) => {
     if (target.classList.contains("equals") && firstNumber && operator) {
         secondNumber = screen.innerText;
         clearDisplay();
+
         firstNumber = parseInt(firstNumber);
         secondNumber = parseInt(secondNumber);
         result = operate(firstNumber, secondNumber, operator);
         console.log(result);
-        // if result is a decimal that starts with 0 (e.g. 0.54)
-        if (result[0] === 0) {
-            result = parseInt(result.toFixed(3))
+
+        if (result % 1 != 0) {
+            result.toFixed(3);
         }
-        // result does not start with a 0; i.e. not a decimal
+
         else {
-            //refine to condense output and make more manageable
             result = refine(result);
         }
+        // // // // // // // // // preserving this just in case all fails // // // // // // // //
+        // if result is a decimal
+        // if (0 <= result <= 1) {
+        //     result = result.toFixed(2);
+        // }
+
+        // else {
+        //     firstNumber = result;
+        //     secondNumber = undefined;
+        //     operator = undefined;
+        //     thirdNumber = true;
+        // }
+        // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
         addToDisplay(result);
-        firstNumber = result;
+        firstNumber = parseInt(result);
         secondNumber = undefined;
         operator = undefined;
         thirdNumber = true;

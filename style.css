@@ -38,7 +38,7 @@ button {
     border-radius: 0.75rem;
     width: 243px;
     height: 70px;
-    background-color: #FAF7EF /* commented grey 606060*/
+    background-color: #d3d6e3; /* commented grey 606060*/
 /*  word-wrap: break-word;
     word-break: break-all;  apparently these are for the number to wrap around when they get too big. not working as of current though*/
 }
