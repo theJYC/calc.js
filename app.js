@@ -220,6 +220,7 @@ n.b. these edge cases were not fixed at the time this script was written
 given that they are centered around doing a deeper dive into JS's unique way of handling numbers.
 
 since the priority was to deploy a functional web application with command of DOM and WebAPI concepts,
-i will be putting a pause on developing this calculator since the learning priority was achieved :)
+i will be putting a pause on working on those edge cases until further notice
+since the learning priority was achieved. learned a whole lot about js & interactive web dev! :)
 
 */
