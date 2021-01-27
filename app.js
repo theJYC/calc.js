@@ -1,23 +1,18 @@
-//calculator to be keyboard and click activated
-
 /*
-
 0) default (i.e. blank state / AC)
-1) key(s) [x] pressed & staged (loop operation until state 2))
-2) operator pressed & staged
-3) key(s) [y] pressed & staged (loop operation until state 4)
-4) calc function performed (trigger: (=))
-
+1) first operand [x] clicked & staged [enabling further digit inputs until 2)]
+2) operator clicked & staged
+3) second operand [y] clicked & staged [enabling further digit inputs until stage 4)]
+4) calculation performed [when (=) clicked]
 */
 
 //basic maths operators
-
 const add = (x,y) => x + y;
 const subtract = (x,y) => x - y;
 const multiply = (x,y) => x * y;
 const divide = (x,y) => x / y;
 
-// operate (takes an operator and 2 numbers)
+// operate (takes 2 operands (x and y) and operator (z))
 
 const operate = (x,y,z) => {
     switch(z) {
@@ -31,7 +26,7 @@ const operate = (x,y,z) => {
             return multiply(x,y);
             break;
         case "÷":
-            if (y === 0) { // EDGE CASE 1: DIVIDE BY ZERO
+            if (y === 0) { //EDGE CASE 1: DIVIDE BY ZERO
                 alert("Cannot divide by zero.");
                 return clearDisplay();
             } else {
@@ -44,9 +39,9 @@ const operate = (x,y,z) => {
 //select all the buttons that are to be manipulated by JS:
 const screen = document.querySelector("#screen-number"); // screen value
 
-//functions that interacts with the display when number button is clicked
+//functions that interacts with the display when button is clicked
 const addToDisplay = (value) => {
-    return screen.innerText += value; //to stage the key input onto the screen as a string
+    return screen.innerText += value; //stages key input onto the screen as a string
 }
 
 const clearDisplay = () => {
@@ -67,10 +62,10 @@ const refine = (num) => {
 }
 
 //these are indicators for the logic (not the display) of the calculator.
-//p.s. important to separate out the logic and the display!
+//manipulated during certain stages of the calculation
 let numberOnScreen = false;
 let operatorOnScreen = false;
-let firstNumber; //made these into variables, which will all be undefined to begin with;
+let firstNumber; //declaring these variables render them undefined until further action;
 let operator;
 let secondNumber;
 let thirdNumber;
@@ -150,36 +145,24 @@ allButtons.addEventListener("click", (e) => {
         secondNumber = screen.innerText;
         clearDisplay();
 
-        firstNumber = parseInt(firstNumber);
-        secondNumber = parseInt(secondNumber);
+        firstNumber = +firstNumber; //unary operator to convert str to num
+        secondNumber = +secondNumber; //(parseInt avoided, as to inadvertently convert a float into an int!)
         result = operate(firstNumber, secondNumber, operator);
-        console.log(result);
+        console.log(`output is ${result}`);
+        console.log(typeof result);
 
-        if (result % 1 != 0) {
-            result.toFixed(3);
-        }
-
-        else {
+        if (result.toString().length >= 10) { //if output is a decimal, no need to refine but
             result = refine(result);
         }
-        // // // // // // // // // preserving this just in case all fails // // // // // // // //
-        // if result is a decimal
-        // if (0 <= result <= 1) {
-        //     result = result.toFixed(2);
-        // }
 
-        // else {
-        //     firstNumber = result;
-        //     secondNumber = undefined;
-        //     operator = undefined;
-        //     thirdNumber = true;
-        // }
-        // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+        else if (result.toString().length >= 10 && result % 1 != 0) {
+            result = result.toFixed(6);
+        }
         addToDisplay(result);
-        firstNumber = parseInt(result);
-        secondNumber = undefined;
-        operator = undefined;
-        thirdNumber = true;
+            firstNumber = +result;
+            secondNumber = undefined;
+            operator = undefined;
+            thirdNumber = true;
     }
     if (target.classList.contains("percent")) {
         percent = screen.innerText / 100;
@@ -213,12 +196,14 @@ allButtons.addEventListener("click", (e) => {
 
 });
 
-//nextsteps:
-// allclear (AC) button; (done)
- // float toFixed();
- // big numbers (to sig figs);
- // negative numbers;
- // automatic next calculation
+ /* edge cases fixed:
+
+ allclear (AC) button; (done)
+ parsing floats;
+ big numbers (to sig figs);
+ negative numbers (for both first and second operands);
+ automatic next calculation
+
 
 /* bugs
 
