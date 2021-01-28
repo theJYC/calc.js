@@ -149,24 +149,27 @@ allButtons.addEventListener("click", (e) => {
         secondNumber = +secondNumber; //parseInt avoided to prevent converting a float into an int!
         result = operate(firstNumber, secondNumber, operator);
         console.log(`output is ${result}`);
-        console.log(typeof result);
 
-        //first check-- if number is a large input decimal (e.g. 2/3)
+        //first check-- if output is a large input decimal (e.g. 2/3)
         if (result.toString().length >= 10 && result < 1 && result > 0) {
+            console.log('output is a large input decimal')
             addToDisplay(result.toFixed(6));
         }
-        //second check-- if number is a float larger than 1 but smaller than 999 (e.g. 5/3)
+        //second check-- if output is a float larger than 1 but smaller than 999 (e.g. 5/3)
         else if (result.toString().length >= 10 && result > 1 && result < 999) {
+            console.log('output is a float larger than 1 but smaller than 999')
             addToDisplay(result.toFixed(5));
         }
-        // third check-- if number is > 10 char's,
+        // third check-- if output is > 10 char's,
         // but not a float in the meaning that was defined above @ first & second check (e.g. 23234234231)
         else if (result.toString().length >= 10) {
+            console.log("output is larger than 10 char's in length")
             addToDisplay(convertToReadable(result));
         }
-        // if all three checks are passed, it means output is an integer that is not a large number
-        // i.e. an integer that is less than 10 digits (e.g. 123415)
+        // if all three checks are passed, it means output is an integer or float that is not a large number
+        // i.e. an integer/float that is less than 10 digits (e.g. 123415)
         else {
+            console.log("output is an integer or float no larger than 10 characters in length")
             addToDisplay(result);
         }
             firstNumber = +result;
