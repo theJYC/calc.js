@@ -37,9 +37,9 @@ const operate = (x,y,z) => {
 }
 
 //select all the buttons that are to be manipulated by JS:
-const screen = document.querySelector("#screen-number"); // screen value
+const screen = document.querySelector("#screen-number");
 
-//functions that interacts with the display when button is clicked
+//functions for interacting with display
 const addToDisplay = (value) => {
     return screen.innerText += value; //stages key input onto the screen as a string
 }
@@ -50,7 +50,7 @@ const clearDisplay = () => {
 
 //EDGE CASE 2: LARGE NUMBER OUTPUTS
 
-const refine = (num) => {
+const convertToReadable = (num) => {
     if (num.toString().length >= 10) { //e.g. if result is over 10 sig figs (fills up screen)
         sciNotation = parseInt(num).toExponential(2); //to yield e.g. 5.00e+5
         numToDisplay = sciNotation;
@@ -86,7 +86,7 @@ allButtons.addEventListener("click", (e) => {
         if (screenNumber.length >= 10) {
             clearDisplay();
             bigNumber = screenNumber + input;
-            refinedInput = refine(bigNumber);
+            refinedInput = convertToReadable(bigNumber);
             addToDisplay(refinedInput);
             numberOnScreen = true;
         }
@@ -94,7 +94,7 @@ allButtons.addEventListener("click", (e) => {
         else if (screenNumber.includes("e")) { //i.e. if the input is a large num that has been refine'ed
             clearDisplay();
             bigNumber += input; // this ensures the addition of more sig figs as input gets larger
-            addToDisplay(refine(bigNumber));
+            addToDisplay(convertToReadable(bigNumber));
             numberOnScreen = true;
         }
 
@@ -123,7 +123,7 @@ allButtons.addEventListener("click", (e) => {
         if (screenNumber.length >= 10) {
             clearDisplay();
             bigNumber = screenNumber + input;
-            refinedInput = refine(bigNumber);
+            refinedInput = convertToReadable(bigNumber);
             addToDisplay(refinedInput);
             numberOnScreen = true;
         }
@@ -131,7 +131,7 @@ allButtons.addEventListener("click", (e) => {
         else if (screenNumber.includes("e")) { //i.e. if the input is a large num that has been refine'ed
             clearDisplay();
             bigNumber += input; // this ensures the addition of more sig figs as input gets larger
-            addToDisplay(refine(bigNumber));
+            addToDisplay(convertToReadable(bigNumber));
             numberOnScreen = true;
         }
 
@@ -146,19 +146,29 @@ allButtons.addEventListener("click", (e) => {
         clearDisplay();
 
         firstNumber = +firstNumber; //unary operator to convert str to num
-        secondNumber = +secondNumber; //(parseInt avoided, as to inadvertently convert a float into an int!)
+        secondNumber = +secondNumber; //parseInt avoided to prevent converting a float into an int!
         result = operate(firstNumber, secondNumber, operator);
         console.log(`output is ${result}`);
         console.log(typeof result);
 
-        if (result.toString().length >= 10) { //if output is a decimal, no need to refine but make sure displayed number is readable
-            result = refine(result);
+        //first check-- if number is a large input decimal (e.g. 2/3)
+        if (result.toString().length >= 10 && result < 1 && result > 0) {
+            addToDisplay(result.toFixed(6));
         }
-
-        else if (result.toString().length >= 10 && result % 1 != 0) {
-            result = result.toFixed(6);
+        //second check-- if number is a float larger than 1 but smaller than 999 (e.g. 5/3)
+        else if (result.toString().length >= 10 && result > 1 && result < 999) {
+            addToDisplay(result.toFixed(5));
         }
-        addToDisplay(result);
+        // third check-- if number is > 10 char's,
+        // but not a float in the meaning that was defined above @ first & second check (e.g. 23234234231)
+        else if (result.toString().length >= 10) {
+            addToDisplay(convertToReadable(result));
+        }
+        // if all three checks are passed, it means output is an integer that is not a large number
+        // i.e. an integer that is less than 10 digits (e.g. 123415)
+        else {
+            addToDisplay(result);
+        }
             firstNumber = +result;
             secondNumber = undefined;
             operator = undefined;
@@ -168,7 +178,7 @@ allButtons.addEventListener("click", (e) => {
         percent = screen.innerText / 100;
         if (percent.length >= 10) {
             clearDisplay();
-            addToDisplay(refine(percent));
+            addToDisplay(convertToReadable(percent));
         }
         else {
             clearDisplay();
@@ -199,17 +209,27 @@ allButtons.addEventListener("click", (e) => {
  /*
  edge cases still to be fixed (in order of priority):
 
+ THIS BUG IS NOW FIXED :) X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
+
  1a) 0.33333223455433 input converts to 0.00e+0
  -when there are long lines of outputs (between 0 and 1), find a different way to display the output.
  -ideally the output should be in a readable format for small numbers (decimals).
  -0.00e+0 vs. 0.3333322 (a more readable output rounded up, to sum 10 char's in length to fit screen)
 
- 1b) % (percent) function outputing without refine() taking place
+ X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
+
+ 1b) % (percent) function outputing without convertToReadable() taking place
  -this must be to do with .toExponent() not being entirely compatible for small numbers in JS.
  -this must also be tied to edge case 1) above.
+ -this kind of is tied to edge case 1a), but different
+  because the fix will have to be a local fix to the percent() function
+  (applying the same fix from operate() to percent(), re: floats btw 0 and 1).
 
+ THIS REMAINS SECOND PRIORITY
  2) 0.33333223455433 input (after being converted to 0.00e+0) plus operator and operand will output 0.
- -evidently this bug has to do with
+ -evidently this bug has to do with stage 1) of the calculator.
+ -will need to isolate the fix on there.
+ -ideally, 0.3333333 will be turned to 0.333333 (.toFixed(6 or etc.)).
 
  3) when multiple operators are pressed
  -stage the last pressed operator, and ignore the previous ones.
