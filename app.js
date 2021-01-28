@@ -234,10 +234,12 @@ allButtons.addEventListener("click", (e) => {
  -will need to isolate the fix on there.
  -ideally, 0.3333333 will be turned to 0.333333 (.toFixed(6 or etc.)).
 
- 3) when multiple operators are pressed
+ 3) when operator buttons are clicked multiple times
  -stage the last pressed operator, and ignore the previous ones.
  -maybe add a visual function to indicate the operator 'in action'.
 
+ 4) when more than one . (decimal point) is clicked
+ -disable the decimal point button once it has been staged once on the screen.
 
 n.b. these edge cases were not fixed at the time this script was written
 given that they are centered around doing a deeper dive into JS's unique way of handling numbers.
