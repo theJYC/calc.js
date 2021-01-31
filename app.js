@@ -22,7 +22,7 @@ const operate = (x,y,z) => {
         case "-":
             return subtract(x,y);
             break;
-        case "x":
+        case "×":
             return multiply(x,y);
             break;
         case "÷":
