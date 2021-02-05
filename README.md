@@ -1,9 +1,10 @@
+# Calculator
 
 <a href="https://jinyoungch0i.github.io/Calculator/">
     <img src="calc.gif" alt='calculator demo' height="300">
 </a>
 
-**Technologies**: HTML, CSS, vanilla JavaScript, DOM API
+#### Technologies: HTML, CSS, JavaScript, Web API (DOM)
 
 After picking up JavaScript a few months ago, this is my first standalone project that has been testing out the limits to my vanilla JS knowledge.
 
